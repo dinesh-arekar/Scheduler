@@ -1,0 +1,81 @@
+<section id="features" class="py-24 bg-slate-50">
+
+  <div class="max-w-6xl mx-auto px-4 sm:px-6">
+
+    <!-- Section Heading -->
+    <div class="text-center mb-16">
+
+      <!-- Badge -->
+      <div
+        class="mb-6 inline-flex items-center gap-1.5 bg-red-500/10 border border-red-500/15 text-red-500 text-[11px] font-medium tracking-[0.06em] uppercase px-3.5 py-1.5 rounded-full">
+
+        <svg [lucideIcon]="badgeIcon" class="size-3"></svg>
+
+        Everything you need
+
+      </div>
+
+      <!-- Heading -->
+      <h2
+        class="font-serif text-4xl sm:text-5xl font-medium leading-tight text-gray-900">
+
+        Automate your entire
+
+        <br />
+
+        <span class="text-red-400 italic">
+          social media workflow
+        </span>
+
+      </h2>
+
+      <!-- Description -->
+      <p
+        class="mt-5 text-gray-500 max-w-xl mx-auto leading-relaxed">
+
+        From content creation to scheduling — Scheduler handles it
+        all so you can focus on what matters most.
+
+      </p>
+
+    </div>
+
+    <!-- Feature Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+      @for (feature of features; track feature.title) {
+
+        <div
+          class="bg-white rounded-2xl border border-slate-100 p-6 hover:border-slate-200 hover:shadow-md hover:shadow-slate-100 group transition-all duration-200">
+
+          <!-- Icon Container -->
+          <div
+            [class]="feature.color + ' size-10 rounded-xl flex items-center justify-center mb-4'">
+
+            <svg [lucideIcon]="feature.icon" class="size-5"></svg>
+
+          </div>
+
+          <!-- Feature Title -->
+          <h3 class="text-slate-900 mb-2 font-medium">
+
+            {{ feature.title }}
+
+          </h3>
+
+          <!-- Feature Description -->
+          <p class="text-sm text-slate-500/90 leading-relaxed">
+
+            {{ feature.description }}
+
+          </p>
+
+        </div>
+
+      }
+
+    </div>
+
+  </div>
+
+</section>

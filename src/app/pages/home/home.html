@@ -1,0 +1,270 @@
+<div className="min-h-screen bg-white text-slate-900 font-sans">
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-slate-100">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+
+    <!-- Logo -->
+    <a
+      routerLink="/"
+      (click)="scrollToTop()"
+      class="flex items-center gap-2"
+    >
+      <img src="/logo.svg" alt="logo" class="size-7" />
+
+      <span class="text-xl lg:text-2xl font-medium font-serif text-slate-800">
+        Scheduler
+      </span>
+    </a>
+
+    <!-- Navigation Links -->
+    <div class="hidden md:flex items-center gap-8 text-sm text-slate-500">
+
+      <a href="#features" class="hover:text-slate-900">
+        Features
+      </a>
+
+      <a href="#how-it-works" class="hover:text-slate-900">
+        How it works
+      </a>
+
+      <a href="#pricing" class="hover:text-slate-900">
+        Pricing
+      </a>
+
+    </div>
+
+    <!-- Conditional Buttons -->
+    @if (user) {
+
+      <!-- Show when user is logged in -->
+      <a
+        routerLink="/dashboard"
+        class="flex items-center gap-1.5 text-sm font-medium bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full shadow-sm hover:shadow-red-200 hover:shadow-md"
+      >
+        Go to Dashboard
+
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M5 12h14"></path>
+          <path d="m12 5 7 7-7 7"></path>
+        </svg>
+      </a>
+
+    } @else {
+
+      <!-- Show when user is NOT logged in -->
+      <div class="flex items-center gap-3">
+
+        <a
+          routerLink="/login"
+          class="text-sm text-slate-600 hover:text-slate-900 hidden sm:block"
+        >
+          Sign In
+        </a>
+
+        <a
+          routerLink="/login"
+          class="flex items-center gap-1.5 text-sm bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full shadow-sm hover:shadow-red-200 hover:shadow-md"
+        >
+          Get Started
+
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M5 12h14"></path>
+            <path d="m12 5 7 7-7 7"></path>
+          </svg>
+        </a>
+
+      </div>
+    }
+
+  </div>
+</nav>
+
+<section class="relative overflow-hidden">
+
+  <!-- Subtle grid -->
+  <div
+    class="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-size-[56px_56px] pointer-events-none">
+  </div>
+
+  <!-- Red soft glow -->
+  <div
+    class="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[560px] bg-[radial-gradient(ellipse_at_center,rgba(239,68,68,0.08)_0%,transparent_70%)] pointer-events-none">
+  </div>
+
+  <div class="relative max-w-6xl mx-auto px-5 sm:px-8 pt-20 pb-12 text-center">
+
+    <!-- Badge -->
+    <div
+      class="inline-flex items-center gap-2 bg-red-50 border border-red-100 text-red-500 text-sm px-3.5 py-1.5 rounded-full mb-8">
+
+      <span class="size-1.5 bg-red-400 rounded-full"></span>
+
+      AI-Powered Social Media Automation
+
+    </div>
+
+    <!-- Headline -->
+    <h1 class="font-serif text-5xl sm:text-6xl md:text-7xl xl:text-8xl text-slate-900">
+
+      Schedule smarter.
+
+      <br>
+
+      <span class="text-red-400 italic">
+        Grow faster.
+      </span>
+
+    </h1>
+
+    <!-- Subheadline -->
+    <p class="mt-7 text-gray-500 max-w-2xl mx-auto">
+      Scheduler lets you create, schedule, and auto-engage across all
+      your social platforms — powered by AI that writes your captions
+      and replies for you.
+    </p>
+
+    <!-- CTA Buttons -->
+    <div
+      class="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3">
+
+      <!-- Start for free -->
+      <a
+        routerLink="/login"
+        class="bg-red-500 text-white rounded-full font-medium hover:bg-red-600 hover:shadow-[0_8px_24px_rgba(239,68,68,0.35)] inline-flex items-center gap-2 text-[15px] px-8 py-3.5 w-full sm:w-auto justify-center transition-all">
+
+        Start for free
+
+        <svg
+          lucideArrowRight
+          class="size-4">
+        </svg>
+
+      </a>
+
+      <!-- See how it works -->
+      <a
+        href="#how-it-works"
+        class="bg-transparent text-[#333] border-[1.5px] border-black/10 rounded-full font-medium hover:bg-black/5 hover:border-black/20 inline-flex items-center gap-2 text-[15px] px-8 py-3.5 w-full sm:w-auto backdrop-blur justify-center transition-all">
+
+        See how it works
+
+      </a>
+
+    </div>
+
+    <!-- Note -->
+    <p class="mt-5 text-xs text-gray-400">
+      No credit card required · Free forever plan available
+    </p>
+
+  </div>
+
+  <!-- Dashboard Mockup -->
+  <div class="relative max-w-5xl mx-auto px-5 sm:px-8 pb-0">
+
+    <div class="rounded-t-2xl overflow-hidden border border-gray-200 border-b-0">
+
+      <!-- Browser Chrome -->
+      <div
+        class="flex items-center gap-2 px-4 py-3"
+        style="background: #f0f0f0; border-bottom: 1px solid rgba(0,0,0,0.06);">
+
+        <div class="w-3 h-3 rounded-full bg-red-400"></div>
+
+        <div class="w-3 h-3 rounded-full bg-amber-400"></div>
+
+        <div class="w-3 h-3 rounded-full bg-emerald-400"></div>
+
+        <div class="flex-1 mx-4 rounded-md h-5 max-w-xs bg-white/80"></div>
+
+      </div>
+
+      <!-- Mock Content -->
+      <div class="p-6" style="background: #f7f7f7;">
+
+        <!-- Stats Row -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+
+          @for (stat of stats; track stat.label) {
+            <div
+              class="rounded-xl p-4 bg-white"
+              style="border: 1px solid rgba(0,0,0,0.06);">
+
+              <div class="text-2xl font-bold text-gray-900 tabular-nums">
+                {{ stat.val }}
+              </div>
+
+              <div class="text-xs text-gray-400 mt-1">
+                {{ stat.label }}
+              </div>
+
+            </div>
+          }
+
+        </div>
+
+        <!-- Activity List -->
+        <div
+          class="rounded-xl p-4 space-y-3 bg-white"
+          style="border: 1px solid rgba(0,0,0,0.06);">
+
+          <div
+            class="text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-3">
+
+            Recent Activity
+
+          </div>
+
+          @for (activity of activities; track activity.text) {
+            <div class="flex items-center gap-3">
+
+              <svg
+                lucideDot
+                class="size-5 text-gray-300">
+              </svg>
+
+              <span class="text-sm text-gray-600 flex-1">
+                {{ activity.text }}
+              </span>
+
+              <span class="text-xs text-gray-300 shrink-0">
+                {{ activity.time }}
+              </span>
+
+            </div>
+          }
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+<app-features></app-features>
+<app-how-it-works></app-how-it-works>
+<app-testimonials></app-testimonials>
+<app-cta></app-cta>
+<app-footer></app-footer>
+</div>

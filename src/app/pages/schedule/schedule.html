@@ -1,0 +1,356 @@
+<div class="flex flex-col gap-6 lg:flex-row">
+
+  <!-- Compose Post Panel -->
+  <div class="w-full shrink-0 lg:w-[460px]">
+    <div class="rounded-2xl border border-slate-200 bg-white p-6">
+
+      <div class="mb-6 flex items-center gap-2">
+        <h2 class="text-lg text-slate-700">Compose Post</h2>
+      </div>
+
+      <form class="space-y-5" (ngSubmit)="handleSchedule($event)">
+
+        <!-- Platform Selection -->
+        <div>
+          <label class="mb-2 block text-xs uppercase text-slate-500">
+            Platforms
+          </label>
+
+          <div class="flex flex-wrap gap-3">
+            @for (platform of platforms; track platform.id) {
+              <button
+                type="button"
+                (click)="togglePlatform(platform.id)"
+                [class.bg-red-50]="isPlatformSelected(platform.id)"
+                [class.border-red-300]="isPlatformSelected(platform.id)"
+                [class.text-red-500]="isPlatformSelected(platform.id)"
+                [class.border-slate-200]="!isPlatformSelected(platform.id)"
+                [class.text-slate-500]="!isPlatformSelected(platform.id)"
+                class="rounded-md border p-3 transition-all duration-150 hover:border-slate-300"
+                [attr.aria-pressed]="isPlatformSelected(platform.id)"
+                [attr.aria-label]="platform.name"
+                [title]="platform.name">
+
+                <app-platform-icon
+                  [platform]="platform.id"
+                  [size]="18">
+                </app-platform-icon>
+
+              </button>
+            }
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div>
+          <label
+            for="post-content"
+            class="mb-2 block text-xs uppercase text-slate-500">
+            Content
+          </label>
+
+          <textarea
+            id="post-content"
+            name="content"
+            required
+            rows="5"
+            maxlength="280"
+            placeholder="What do you want to share today?"
+            class="w-full resize-none rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 text-sm text-slate-900 outline-none placeholder:text-slate-400 focus:border-red-300"
+            [(ngModel)]="content">
+          </textarea>
+
+          <div
+            class="mt-1 text-right text-xs font-medium"
+            [class.text-red-500]="content.length > 270"
+            [class.text-slate-400]="content.length <= 270">
+            {{ content.length }}/280
+          </div>
+        </div>
+
+        <!-- Media Upload -->
+        <div>
+          <label class="mb-2 block text-xs uppercase text-slate-500">
+            Media (optional)
+          </label>
+
+          @if (mediaFile && mediaPreviewUrl) {
+            <div class="relative overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
+
+              @if (mediaFile.type.startsWith('image/')) {
+                <img
+                  [src]="mediaPreviewUrl"
+                  alt="Selected media preview"
+                  class="h-40 w-full object-cover">
+              } @else {
+                <video
+                  [src]="mediaPreviewUrl"
+                  class="h-40 w-full object-cover"
+                  controls>
+                </video>
+              }
+
+              <button
+                type="button"
+                (click)="removeMedia()"
+                aria-label="Remove selected media"
+                class="absolute right-2 top-2 flex size-7 items-center justify-center rounded-full bg-slate-900/70 text-white transition-colors hover:bg-slate-900">
+
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2">
+                  <path d="M18 6 6 18M6 6l12 12"/>
+                </svg>
+
+              </button>
+            </div>
+          } @else {
+            <label class="group flex cursor-pointer items-center justify-center gap-2 rounded-xl border-2 border-dashed border-slate-200 p-5 py-10 transition-all hover:border-red-300 hover:bg-red-50/30">
+
+              <span class="text-sm text-slate-500 transition-colors group-hover:text-red-600">
+                Click to upload image or video
+              </span>
+
+              <input
+                type="file"
+                accept="image/*,video/*"
+                class="hidden"
+                (change)="onMediaSelected($event)">
+            </label>
+          }
+        </div>
+
+        <!-- Date and Time -->
+        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+
+          <div>
+            <label
+              for="scheduled-date"
+              class="mb-2 block text-xs uppercase text-slate-500">
+              Date
+            </label>
+
+            <input
+              id="scheduled-date"
+              name="scheduledDate"
+              type="date"
+              required
+              [min]="minDate"
+              [(ngModel)]="scheduledDate"
+              class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-red-300">
+          </div>
+
+          <div>
+            <label
+              for="scheduled-time"
+              class="mb-2 block text-xs uppercase text-slate-500">
+              Time
+            </label>
+
+            <input
+              id="scheduled-time"
+              name="scheduledTime"
+              type="time"
+              required
+              [(ngModel)]="scheduledTime"
+              class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-red-300">
+          </div>
+
+        </div>
+
+        <!-- Schedule Button -->
+        <button
+          type="submit"
+          [disabled]="loading"
+          class="flex w-full items-center justify-center gap-2 rounded-lg bg-red-500 py-3.5 text-white transition-all hover:bg-red-600 disabled:cursor-not-allowed disabled:opacity-60">
+
+          @if (loading) {
+            <span class="size-4 animate-spin rounded-full border-2 border-white border-t-transparent"></span>
+            Scheduling...
+          } @else {
+            Schedule Post
+
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          }
+
+        </button>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- Queue Panels -->
+  <div class="flex min-w-0 flex-1 flex-col gap-6">
+
+    <!-- Upcoming Posts -->
+    <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white">
+
+      <div class="flex items-center gap-2.5 border-b border-slate-100 px-5 py-4">
+
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          class="text-zinc-500">
+          <rect x="3" y="5" width="18" height="16" rx="2"/>
+          <path d="M16 3v4M8 3v4M3 11h18"/>
+        </svg>
+
+        <h3 class="text-sm text-slate-900">Upcoming</h3>
+
+        <span class="ml-auto rounded-full bg-zinc-100 px-2 py-0.5 text-xs font-bold text-zinc-700">
+          {{ scheduled.length }}
+        </span>
+
+      </div>
+
+      <div class="max-h-72 divide-y divide-slate-50 overflow-y-auto">
+
+        @if (scheduled.length === 0) {
+          <div class="py-10 text-center text-sm text-slate-400">
+            No posts scheduled yet
+          </div>
+        } @else {
+          @for (post of scheduled; track post._id) {
+
+            <div class="px-5 py-4 transition-colors hover:bg-slate-50/60">
+
+              <div class="mb-2 flex flex-wrap items-center justify-between gap-2">
+
+                <div class="flex items-center gap-1.5">
+                  @for (platformId of post.platforms; track platformId) {
+                    <app-platform-icon
+                      [platform]="platformId"
+                      [size]="14">
+                    </app-platform-icon>
+                  }
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2">
+
+                  @if (post.mediaType) {
+                    <span class="rounded-md border border-slate-200 bg-slate-100 px-1.5 py-0.5 text-xs font-semibold capitalize text-slate-600">
+                      {{ post.mediaType }}
+                    </span>
+                  }
+
+                  <span class="text-xs text-slate-400">
+                    {{ post.scheduledFor | date:'medium' }}
+                  </span>
+
+                </div>
+
+              </div>
+
+              <p class="line-clamp-2 max-w-md text-sm text-slate-500">
+                {{ post.content }}
+              </p>
+
+            </div>
+
+          }
+        }
+
+      </div>
+    </div>
+
+    <!-- Published Posts -->
+    <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white">
+
+      <div class="flex items-center gap-2.5 border-b border-slate-100 px-5 py-4">
+
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          class="text-zinc-500">
+          <path d="m22 2-7 20-4-9-9-4Z"/>
+          <path d="M22 2 11 13"/>
+        </svg>
+
+        <h3 class="text-sm text-slate-900">Published</h3>
+
+        <span class="ml-auto rounded-full bg-zinc-100 px-2 py-0.5 text-xs font-bold text-zinc-700">
+          {{ published.length }}
+        </span>
+
+      </div>
+
+      <div class="max-h-72 divide-y divide-slate-50 overflow-y-auto">
+
+        @if (published.length === 0) {
+          <div class="py-10 text-center text-sm text-slate-400">
+            No published posts yet
+          </div>
+        } @else {
+          @for (post of published; track post._id) {
+
+            <div class="px-5 py-4 transition-colors hover:bg-slate-50/60">
+
+              <div class="mb-2 flex flex-wrap items-center justify-between gap-2">
+
+                <div class="flex items-center gap-1.5">
+                  @for (platformId of post.platforms; track platformId) {
+                    <app-platform-icon
+                      [platform]="platformId"
+                      [size]="14">
+                    </app-platform-icon>
+                  }
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2">
+
+                  @if (post.mediaType) {
+                    <span class="rounded-md border border-slate-200 bg-slate-100 px-1.5 py-0.5 text-xs font-semibold capitalize text-slate-600">
+                      {{ post.mediaType }}
+                    </span>
+                  }
+
+                  <span class="text-xs text-slate-400">
+                    {{ (post.updatedAt || post.scheduledFor) | date:'medium' }}
+                  </span>
+
+                  <span class="rounded-full border border-emerald-100 bg-emerald-50 px-2 py-0.5 text-xs text-emerald-700">
+                    Published
+                  </span>
+
+                </div>
+
+              </div>
+
+              <p class="line-clamp-2 text-sm text-slate-500">
+                {{ post.content }}
+              </p>
+
+            </div>
+
+          }
+        }
+
+      </div>
+    </div>
+
+  </div>
+</div>

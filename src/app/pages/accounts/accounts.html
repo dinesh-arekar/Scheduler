@@ -1,0 +1,56 @@
+<div class="max-w-4xl space-y-8">
+
+  <!-- Header -->
+  <div class="flex flex-col sm:flex-row sm:items-center
+           justify-between gap-4">
+    <div>
+      <h2 class="text-xl font-semibold text-slate-900">
+        Connected Accounts
+      </h2>
+
+      <p class="mt-1 text-sm text-slate-500">
+        {{ connectedCount() }} of 4 platforms connected
+      </p>
+    </div>
+
+    <button type="button" (click)="openPlatformPicker()" class="flex items-center justify-center gap-2
+             rounded-full bg-red-500 px-5 py-2.5
+             font-medium text-white transition
+             hover:bg-red-600">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 22v-5"></path>
+        <path d="M9 8V2"></path>
+        <path d="M15 8V2"></path>
+        <path d="M18 8a6 6 0 0 1-12 0"></path>
+        <path d="M6 14h12"></path>
+      </svg>
+
+      Connect Account
+    </button>
+  </div>
+
+  <!-- Connected accounts component -->
+  @if (isLoading()) {
+  <p class="text-sm text-slate-500">Loading accounts...</p>
+  }
+  @else if (errorMessage()) {
+  <div class="rounded-lg bg-red-50 p-4 text-sm text-red-600">
+    {{ errorMessage() }}
+
+    <button type="button" (click)="loadAccounts()" class="ml-2 font-semibold underline">
+      Retry
+    </button>
+  </div>
+  }
+  @else {
+  <app-accounts-list [accounts]="accounts()" (disconnect)="disconnectAccount($event)" />
+  }
+
+  <!-- Temporary modal placeholder -->
+  @if (showPlatformPicker()) {
+  <app-platform-picker [connectedIds]="connectedIds()" [connecting]="connecting()" (close)="closePlatformPicker()"
+    (connect)="onPlatformConnect($event)" />
+  }
+
+</div>

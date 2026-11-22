@@ -1,0 +1,173 @@
+<div
+  class="fixed inset-y-0 left-0 z-50 flex h-full w-64 flex-col
+         transform border-r border-slate-200 bg-white
+         transition-transform duration-200 ease-in-out
+         md:relative md:translate-x-0"
+  [class.translate-x-0]="isOpen"
+  [class.-translate-x-full]="!isOpen">
+
+  <!-- Logo -->
+  <div class="px-6 pb-4 pt-6">
+    <div
+      class="flex items-center gap-1.5 text-xl tracking-tight text-slate-800">
+
+      <img
+        src="/logo.svg"
+        alt="Logo"
+        class="size-6">
+
+      Scheduler
+    </div>
+  </div>
+
+  <!-- Navigation Section Label -->
+  <div class="px-6 py-2">
+    <span
+      class="text-xs uppercase tracking-wider text-slate-500">
+      Menu
+    </span>
+  </div>
+
+  <!-- Navigation Links -->
+  <nav class="flex-1 space-y-1 px-3">
+
+    <!-- Dashboard -->
+    <a
+      routerLink="/dashboard"
+      routerLinkActive="bg-red-50 text-red-600 border-red-100"
+      [routerLinkActiveOptions]="{ exact: true }"
+      (click)="closeMenu.emit()"
+      class="flex items-center gap-3 rounded border border-transparent
+             px-3 py-2.5 text-sm text-slate-500
+             transition-all duration-150 hover:bg-slate-50
+             hover:text-slate-700">
+
+      <svg
+        lucideLayoutDashboard
+        class="size-4 shrink-0 text-slate-500">
+      </svg>
+
+      Dashboard
+
+      <span
+        class="ml-auto h-5 w-[5px] rounded-full bg-red-500"
+        [class.hidden]="!isDashboardActive()">
+      </span>
+    </a>
+
+    <!-- Accounts -->
+    <a
+      routerLink="/accounts"
+      routerLinkActive="bg-red-50 text-red-600 border-red-100"
+      #accountsLink="routerLinkActive"
+      (click)="closeMenu.emit()"
+      class="flex items-center gap-3 rounded border border-transparent
+             px-3 py-2.5 text-sm text-slate-500
+             transition-all duration-150 hover:bg-slate-50
+             hover:text-slate-700">
+
+      <svg lucideUsers class="size-4 shrink-0"></svg>
+
+      Accounts
+
+      <span
+        class="ml-auto h-5 w-[5px] rounded-full bg-red-500"
+        [class.hidden]="!accountsLink.isActive">
+      </span>
+    </a>
+
+    <!-- Scheduler -->
+    <a
+      routerLink="/schedule"
+      routerLinkActive="bg-red-50 text-red-600 border-red-100"
+      #scheduleLink="routerLinkActive"
+      (click)="closeMenu.emit()"
+      class="flex items-center gap-3 rounded border border-transparent
+             px-3 py-2.5 text-sm text-slate-500
+             transition-all duration-150 hover:bg-slate-50
+             hover:text-slate-700">
+
+      <svg lucideCalendarDays class="size-4 shrink-0"></svg>
+
+      Scheduler
+
+      <span
+        class="ml-auto h-5 w-[5px] rounded-full bg-red-500"
+        [class.hidden]="!scheduleLink.isActive">
+      </span>
+    </a>
+
+    <!-- AI Composer -->
+    <a
+      routerLink="/ai-composer"
+      routerLinkActive="bg-red-50 text-red-600 border-red-100"
+      #composerLink="routerLinkActive"
+      (click)="closeMenu.emit()"
+      class="flex items-center gap-3 rounded border border-transparent
+             px-3 py-2.5 text-sm text-slate-500
+             transition-all duration-150 hover:bg-slate-50
+             hover:text-slate-700">
+
+      <svg lucideWandSparkles class="size-4 shrink-0"></svg>
+
+      AI Composer
+
+      <span
+        class="ml-auto h-5 w-[5px] rounded-full bg-red-500"
+        [class.hidden]="!composerLink.isActive">
+      </span>
+    </a>
+
+  </nav>
+
+  <!-- User Footer -->
+  <div class="border-t border-slate-100 p-4">
+  @if(user; as currentUser) {
+    <div
+      class="flex items-center gap-3 rounded-xl p-2 transition-colors
+             hover:bg-slate-50">
+
+      <!-- User Avatar -->
+      <div
+        class="flex size-8 shrink-0 items-center justify-center
+               rounded-full bg-linear-to-br from-red-400 to-pink-400
+               text-sm font-medium text-white">
+
+        {{ currentUser.name.charAt(0).toUpperCase() || 'U' }}
+
+      </div>
+
+      <!-- User Details -->
+      <div class="min-w-0 flex-1">
+
+        <div class="truncate text-sm text-slate-800">
+          {{ currentUser.name }}
+        </div>
+
+        <div class="truncate text-xs text-slate-400">
+          {{ currentUser.email }}
+        </div>
+
+      </div>
+
+    </div>
+  } 
+
+    <!-- Sign Out -->
+    <button
+      type="button"
+      (click)="logout()"
+      class="mt-1 flex w-full items-center gap-2 rounded
+             px-3 py-2 text-sm text-slate-500
+             transition-all duration-150
+             hover:bg-red-50 hover:text-red-500">
+
+      <svg lucideLogOut class="size-4"></svg>
+
+      Sign Out
+
+    </button>
+
+  </div>
+
+</div>

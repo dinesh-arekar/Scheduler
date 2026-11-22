@@ -1,0 +1,149 @@
+<div
+  class="fixed inset-0 z-50 flex items-center justify-center
+         p-4 bg-slate-900/40 backdrop-blur"
+  (click)="closeModal()"
+>
+  <div
+    class="bg-white rounded-2xl shadow-2xl w-full max-w-md
+           border border-slate-100"
+    (click)="$event.stopPropagation()"
+  >
+
+    <!-- Header -->
+    <div
+      class="flex items-center justify-between
+             px-6 py-4 shadow"
+    >
+      <h3 class="text-slate-700">
+        Choose a Platform
+      </h3>
+
+      <button
+        type="button"
+        (click)="closeModal()"
+        aria-label="Close modal"
+        class="p-2 rounded-full hover:bg-slate-100
+               text-slate-500 transition-colors"
+      >
+        <!-- X icon -->
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M18 6 6 18"></path>
+          <path d="m6 6 12 12"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Platform list -->
+    <div class="p-6 flex flex-col gap-2">
+
+      @for (p of platforms; track p.id) {
+        <button
+          type="button"
+          [disabled]="isConnected(p.id) || isConnecting(p.id)"
+          (click)="connectPlatform(p.id)"
+          class="flex items-center gap-3 p-3.5 rounded-xl
+                 border text-left transition-all"
+          [class.border-red-200]="isConnected(p.id)"
+          [class.bg-red-50]="isConnected(p.id)"
+          [class.cursor-default]="isConnected(p.id)"
+          [class.border-slate-200]="!isConnected(p.id)"
+          [class.bg-slate-50]="!isConnected(p.id)"
+          [class.hover:border-slate-300]="!isConnected(p.id)"
+          [class.hover:bg-slate-100]="!isConnected(p.id)"
+          [class.cursor-pointer]="!isConnected(p.id)"
+          [class.opacity-60]="isConnecting(p.id)"
+        >
+
+          <!-- Platform icon -->
+          <div class="p-2">
+            <app-platform-icon
+              [platform]="p.id"
+              [size]="20"
+              [class.text-red-600]="isConnected(p.id)"
+              [class.text-slate-500]="!isConnected(p.id)"
+            />
+          </div>
+
+          <!-- Label -->
+          <div class="flex-1 min-w-0">
+
+            <div
+              class="text-sm"
+              [class.text-red-700]="isConnected(p.id)"
+              [class.text-slate-800]="!isConnected(p.id)"
+            >
+              {{ p.name }}
+            </div>
+
+            <div class="text-xs text-slate-500 truncate">
+              {{ isConnected(p.id)
+                  ? 'Already connected'
+                  : p.description }}
+            </div>
+
+          </div>
+
+          <!-- Status: connected -->
+          @if (isConnected(p.id)) {
+            <svg
+              class="size-4 text-red-500 shrink-0"
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="m9 12 2 2 4-4"></path>
+            </svg>
+          }
+
+          <!-- Status: connecting -->
+          @else if (isConnecting(p.id)) {
+            <div
+              class="size-4 border-2 border-red-600
+                     border-t-transparent rounded-full
+                     animate-spin shrink-0"
+            ></div>
+          }
+
+          <!-- Status: available -->
+          @else {
+            <svg
+              class="size-3.5 text-slate-400 shrink-0"
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M15 3h6v6"></path>
+              <path d="M10 14 21 3"></path>
+              <path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"></path>
+            </svg>
+          }
+
+        </button>
+      }
+
+    </div>
+  </div>
+</div>
